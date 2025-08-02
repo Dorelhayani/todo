@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Adding User</title>
+    <style>
+        td,th{border: 1px solid black;}
+    </style>
+</head>
+<body>
+<center>
+    <h1>Adding User</h1>
+    <form action="" method="post">
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>User Name</th>
+                <th>User Password</th>
+                <th>User email</th>
+                <th>Select User Type</th>
+                <th>Send</th>
+            </tr>
+            <tr>
+                <td> <input type="text" name="name" id="usrs_name" value="<%= data.name %>" /> </td>
+                <td> <input type="text" name="username" id="usrs_username" value="<%= data.username %>" /> </td>
+                <td> <input type="text" name="password" id="usrs_password" value="<%= data.password %>" /> </td>
+                <td> <input type="text" name="email" id="usrs_email" value="<%= data.email %>" /> </td>
+                <td>
+                    <label for="typeid">User Type </label>
+                    <select name="typeid" id="typeid">
+                        <option value="1">Admin</option>
+                        <option value="2">User</option>
+                    </select>
+                </td>
+                <td>
+                    <button name="btn" value="1">send</button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</center>
+
+
+</body>
+</html>

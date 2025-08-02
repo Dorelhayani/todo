@@ -1,5 +1,5 @@
 // Installed Libraries
-// express, body-parser, mysql2, slashes@2.0.0 ,cookie-parser, jsonwebtoken
+// express, body-parser, ejs, mysql2, slashes@2.0.0 ,cookie-parser, jsonwebtoken
 
 const port = 1234;
 const express = require('express');
@@ -25,17 +25,15 @@ global.stripSlashes = require('slashes').stripSlashes;
 
 global.was_logged = false;
 
-// const users_MID = require("./server/middleware/Users_mid");
-//
+const users_MID = require("./server/middleware/User_Mid");
+const users_rtr = require('./server/routs/User_R');
+// app.use('/users', [users_MID.isLogged], users_rtr);
+app.use('/users', users_rtr);
+
+
 // const Activity_rtr = require('./server/Routs/Activity_R')
 // app.use('/activity', [users_MID.isLogged], Activity_rtr);
-//
-// const corse_rtr = require('./server/Routs/Course_R');
-// app.use('/course', [users_MID.isLogged],corse_rtr);
-//
-// const users_rtr = require('./server/Routs/Users_R');
-// app.use('/users', [users_MID.isLogged], users_rtr);
-//
+
 // const auth_R = require('./server/Routs/auth_R');
 // app.use('/', auth_R);
 app.get('/', (req, res)=>{ res.render("index",{}); });
