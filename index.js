@@ -31,6 +31,10 @@ const users_rtr = require('./server/routs/User_R');
 app.use('/users', users_rtr);
 
 
+const category_rtr = require('./server/Routs/Category_R');
+// app.use('/course', [users_MID.isLogged],category_rtr);
+app.use('/category', category_rtr);
+
 // const Activity_rtr = require('./server/Routs/Activity_R')
 // app.use('/activity', [users_MID.isLogged], Activity_rtr);
 

@@ -55,11 +55,9 @@
 // =====================================================================================================================
 async function AddUser(req, res, next){
     let name = (req.body.name !== undefined) ? addSlashes(req.body.name): "";
-    let username = (req.body.username !== undefined)  ?addSlashes(req.body.username): "";
     let password = (req.body.password !== undefined) ? req.body.password: "";
     // let enc_pass = md5("A"+password);
-    let email = (req.body.email !== undefined) ? addSlashes(req.body.email): "";
-    let typeid = (req.body.typeid !== undefined) ? Number(req.body.typeid): -1;
+    let type = (req.body.type !== undefined) ? Number(req.body.type): -1;
 
     // let Query="INSERT INTO users";
     // Query +="(`name`,`userName`,`password`,`email`,`typeID`,`StudentID`)";
@@ -67,9 +65,9 @@ async function AddUser(req, res, next){
     // Query +=`('${name}','${userName}','${enc_pass}','${email}','${typeID}')`;
 
     let Query="INSERT INTO users";
-    Query +="(`name`,`username`,`password`,`email`,`typeid`)";
+    Query +="(`name`,`password`,`type`)";
     Query +="VALUES";
-    Query +=`('${name}','${username}','${password}','${email}','${typeid}')`;
+    Query +=`('${name}','${password}','${type}')`;
 
     const promisePool = db_pool.promise();
     let rows = [];
@@ -85,9 +83,7 @@ async function AddUser(req, res, next){
 async function UpdateUser(req, res, next){
     let id = parseInt(req.params.id);
     let name = (req.body.name !== undefined) ? addSlashes(req.body.name): "";
-    let username = (req.body.username !== undefined)  ?addSlashes(req.body.username): "";
-    let email = (req.body.email !== undefined) ? addSlashes(req.body.email): "";
-    let typeid = (req.body.typeid !== undefined) ? parseInt(req.body.typeid): -1;
+    let type = (req.body.type !== undefined) ? parseInt(req.body.type): -1;
 
     if(id <= 0) {
         req.GoodOne = false;
@@ -97,9 +93,7 @@ async function UpdateUser(req, res, next){
 
     let Query =`UPDATE users SET `;
     Query +=`name   ='${name}' ,`;
-    Query +=`userName  ='${username}' ,`;
-    Query +=`email  ='${email}' ,`;
-    Query +=`typeid='${typeid}' ,`;
+    Query +=`type='${type}' ,`;
     Query +=` WHERE id='${id}'`;
 
     const promisePool = db_pool.promise();

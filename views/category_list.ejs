@@ -8,33 +8,33 @@
     <title><%= page_title %></title>
     <style>
         td,th{border: 1px solid black;}
-        .centered { text-align: center}
     </style>
 </head>
 <body>
 <center>
     <H1><%= page_title %></H1>
-    <button onclick="location.href='/users/add'">Add User</button>
+    <button onclick="location.href='/category/add'">Add Category</button>
     <table>
         <tr>
-            <th>Name</th>
-            <th>type</th>
+            <th>category name</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
-        <% for(let urs of users){ %>
+        <% for(let ctrs of categories){ %>
             <tr>
-                <td><%= urs.name %></td>
-                <td><%= urs.type %></td>
+                <td><%= ctrs.name %></td>
 
                 <td>
-                    <button onclick="location.href='/users/edit/<%= urs.id %>'">Edit</button>
+<!--                    <form action="/category/Edit" method="post">-->
+<!--                        <input type="hidden" name="id" value="<%=ctrs.id%>">-->
+<!--                        <button>Edit</button>-->
+<!--                    </form>-->
+                    <button onclick="location.href='/category/edit'">Edit</button>
                 </td>
 
-
                 <td>
-                    <form action="/users/delete" method="post">
-                        <input type="hidden" name="id" value="<%=urs.id%>">
+                    <form action="/category/delete" method="post">
+                        <input type="hidden" name="id" value="<%=ctrs.id%>">
                         <button>Delete</button>
                     </form>
                 </td>

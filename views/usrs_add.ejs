@@ -17,20 +17,16 @@
         <table>
             <tr>
                 <th>Name</th>
-                <th>User Name</th>
                 <th>User Password</th>
-                <th>User email</th>
                 <th>Select User Type</th>
                 <th>Send</th>
             </tr>
             <tr>
                 <td> <input type="text" name="name" id="usrs_name" value="<%= data.name %>" /> </td>
-                <td> <input type="text" name="username" id="usrs_username" value="<%= data.username %>" /> </td>
                 <td> <input type="text" name="password" id="usrs_password" value="<%= data.password %>" /> </td>
-                <td> <input type="text" name="email" id="usrs_email" value="<%= data.email %>" /> </td>
                 <td>
-                    <label for="typeid">User Type </label>
-                    <select name="typeid" id="typeid">
+                    <label for="type">User Type </label>
+                    <select name="type" id="type">
                         <option value="1">Admin</option>
                         <option value="2">User</option>
                     </select>
