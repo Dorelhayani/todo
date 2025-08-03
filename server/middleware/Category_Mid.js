@@ -2,7 +2,7 @@
 // =====================================================================================================================
 async function AddCategory(req, res, next){
     let name = addSlashes(req.body.name);
-    let Query =`INSERT INTO categories ( name) VALUES ('${name}')` ;
+    let Query =`INSERT INTO categories ( name) VALUES ('${name}') ` ;
 
     const promisePool = db_pool.promise();
 

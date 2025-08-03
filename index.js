@@ -32,13 +32,14 @@ app.use('/users', users_rtr);
 
 
 const category_rtr = require('./server/Routs/Category_R');
-// app.use('/course', [users_MID.isLogged],category_rtr);
+// app.use('/category', [users_MID.isLogged],category_rtr);
 app.use('/category', category_rtr);
 
-// const Activity_rtr = require('./server/Routs/Activity_R')
-// app.use('/activity', [users_MID.isLogged], Activity_rtr);
+// const task_rtr = require('./server/Routs/Activity_R')
+// app.use('/activity', [users_MID.isLogged], task_rtr);
 
-// const auth_R = require('./server/Routs/auth_R');
-// app.use('/', auth_R);
-app.get('/', (req, res)=>{ res.render("index",{}); });
+const auth_R = require('./server/Routs/Auth_R');
+app.use('/auth', auth_R);
+
+app.get('/', (req, res)=>{ res.render("Home_Page",{}); });
 app.listen(port, ()=> { console.log(`Now Listening On Port http://localhost:${port}`); });
