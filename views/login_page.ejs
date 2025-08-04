@@ -8,11 +8,16 @@
     <title>Log in</title>
 </head>
 <body>
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br>
+
 <center>
-    <form action ="" method="post">
+    <h1>Not Registered</h1>
+    <h1>Add User</h1>
+    <button onclick="location.href='/users/add'">Add User</button><br><br><br><br>
+
+    <form action ="/auth/login" method="post">
         <label for="name">Name</label>
-        <input type="text" name="name" id="name"/> <br><br>
+        <input type="text" name="name" id="name"/> <br>
 
         <label for="password">Password</label>
         <input type="password" name="password" id="password"/> <br><br>

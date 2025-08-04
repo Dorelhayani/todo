@@ -7,13 +7,13 @@ const category_MID = require("../middleware/Category_Mid");
 
 // Create
 // =====================================================================================================================
-router.get("/plan", [category_MID.GetAllCategories], (req,res)=>{
+router.get("/add", [category_MID.GetAllCategories], (req,res)=>{
     res.render("task_add", {
         categories: req.category_data,
         data :{},
     });
 });
-router.post("/plan",[Task_MID.AddTask], (req, res) => { res.redirect("./plan"); });
+router.post("/add",[Task_MID.AddTask], (req, res) => { res.redirect("./add"); });
 // =====================================================================================================================
 
 // Read
