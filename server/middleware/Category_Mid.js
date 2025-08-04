@@ -71,11 +71,11 @@ async function GetCategoryName(req,res,next){
 
     const promisePool = db_pool.promise();
     let rows=[];
-    req.category_names=[];
+    req.category_name=[];
     try {
         [rows] = await promisePool.query(Query);
         for(let row of rows) {
-            req.category_names[row.id] = row.name;
+            req.category_name[row.id] = row.name;
         }
     } catch (err) {
         console.log(err);

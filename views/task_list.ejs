@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <style>
+        td,th{border: 1px solid black;}
+    </style>
+</head>
+<body>
+<center>
+    <title><%= page_title %></title>
+    <H1><%= page_title %></H1>
+    <label for="task_add">Add Task</label>
+    <button onclick="location.href='/task/plan'">Add Task</button>
+    <table>
+        <tr>
+            <td colspan="55">
+                <form action="" method="get">
+
+                    <label for="description">Free Text</label>
+                    <input type="text" name="free_txt" id="free_txt" value="<% filter_params.free_txt %>">
+
+                    <label for="category_id">categories:</label>
+                    <select name="crs_id" id="crs_id">
+
+                        <option value="-1"
+                                <% if (filter_params.category_id === -1){__appened('selected = "1"'); }%>>
+                            ----categories list----
+                        </option>
+
+                        <% for (let ctrs of categories) { %>
+                            <option value="<%= ctrs.id %>"
+                                    <% if (filter_params.category_id === ctrs.id){__appened('selected = "1"'); }%>>
+                                <%=ctrs.name%></option>
+                        <% } %>
+
+                    </select>
+                    <button>Filter</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <br>
+    <table>
+        <tr>
+            <th>Date</th>
+            <th>Course</th>
+            <th>Topic</th>
+        </tr>
+        <% for(let ctg of category_data){ %>
+            <tr>
+                <td><%= ctg.nice_date %></td>
+                <td><%= category_name[ctg.category_id] %></td>
+                <td><%= ctg.due_date %></td>
+                <td><%= ctg.description %></td>
+            </tr>
+        <% } %>
+    </table>
+</center>
+</body>
+</html>

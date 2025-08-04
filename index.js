@@ -1,5 +1,5 @@
 // Installed Libraries
-// express, body-parser, ejs, mysql2, slashes@2.0.0 ,cookie-parser, jsonwebtoken
+// express, body-parser, ejs, mysql2, slashes@2.0.0 ,cookie-parser, jsonwebtoken, md5
 
 const port = 1234;
 const express = require('express');
@@ -27,16 +27,17 @@ global.was_logged = false;
 
 const users_MID = require("./server/middleware/User_Mid");
 const users_rtr = require('./server/routs/User_R');
-// app.use('/users', [users_MID.isLogged], users_rtr);
-app.use('/users', users_rtr);
+app.use('/users', [users_MID.isLogged], users_rtr);
+// app.use('/users', users_rtr);
 
 
 const category_rtr = require('./server/Routs/Category_R');
-// app.use('/category', [users_MID.isLogged],category_rtr);
-app.use('/category', category_rtr);
+app.use('/category', [users_MID.isLogged],category_rtr);
+// app.use('/category', category_rtr);
 
-// const task_rtr = require('./server/Routs/Activity_R')
-// app.use('/activity', [users_MID.isLogged], task_rtr);
+const task_rtr = require('./server/Routs/Tasks_R')
+app.use('/activity', [users_MID.isLogged], task_rtr);
+// app.use('/task', task_rtr);
 
 const auth_R = require('./server/Routs/Auth_R');
 app.use('/auth', auth_R);
