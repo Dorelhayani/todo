@@ -48,16 +48,27 @@
     <br>
     <table>
         <tr>
-            <th>Date</th>
-            <th>Course</th>
-            <th>Topic</th>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Due Date</th>
+            <th>Done</th>
         </tr>
-        <% for(let ctg of category_data){ %>
+        <% for(let tsk of task_data){ %>
             <tr>
-                <td><%= ctg.nice_date %></td>
-                <td><%= category_name[ctg.category_id] %></td>
-                <td><%= ctg.due_date %></td>
-                <td><%= ctg.description %></td>
+                <td><%= category_name[tsk.category_id] %></td>
+                <td><%= tsk.description %></td>
+                <td><%= tsk.nice_date %></td>
+                <td><%= tsk.done %></td>
+
+                <td colspan="100" class="centered">
+                    <form action="" method="get">
+                        <% if (page > 0) { %> <button name="p" value="<%= page-1 %>">Back</button> <% }%>
+                        Page  <%= page+1%> / <%= total_pages+1 %>
+
+                        <% if(page < total_pages) { %>
+                            <button name="p" value="<%= page+1 %>">Next Page</button>
+                        <% } %>
+                    </form>
             </tr>
         <% } %>
     </table>

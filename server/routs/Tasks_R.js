@@ -13,7 +13,7 @@ router.get("/add", [category_MID.GetAllCategories], (req,res)=>{
         data :{},
     });
 });
-router.post("/add",[Task_MID.AddTask], (req, res) => { res.redirect("./add"); });
+router.post("/add",[Task_MID.AddTask], (req, res) => { res.redirect("/task/list"); });
 // =====================================================================================================================
 
 // Read
@@ -23,7 +23,7 @@ router.get("/list",[Task_MID.GetTasks, category_MID.GetCategoryName, category_MI
         page_title:"Tasks List",
         categories : req.category_data,
         category_name : req.category_name,
-        category_data : req.category_data,
+        task_data : req.task_data,
         filter_params : req.filter_params,
     });
 });
