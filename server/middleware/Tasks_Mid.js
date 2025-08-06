@@ -26,14 +26,36 @@ async function AddTask(req, res, next){
 }
 // =====================================================================================================================
 
+// Update Task
+// =====================================================================================================================
+async function UpdateTask(req, res, next){
+    let id = parseInt(req.params.id);
+    let name = addSlashes(req.body.name);
+    let description = (req.body.description !== undefined) ? addSlashes(req.body.description) : "";
+    let due_date = (req.body.due_date !== undefined) ? addSlashes(req.body.due_date) : "";
+
+    if(id <= 0) {
+        req.GoodOne = false;
+        return next();
+    }
+    req.GoodOne = true;
+    let Query = `UPDATE task SET name='${name}', description = '${description}', due_date ='${due_date}'  WHERE id='${id}'`;
+    const promisePool = db_pool.promise();
+    let rows=[];
+    try { [rows] = await promisePool.query(Query);}
+    catch (err) { console.log(err);}
+    next();
+}
+// =====================================================================================================================
+
 // Get Task with nice_date format
 // =====================================================================================================================
-async function GetTasks(req,res,next){
+async function GetAllTasks(req,res,next){
     let free_txt = (req.query.free_txt !== undefined) ? addSlashes(req.query.free_txt) : "" ;
-    let category_id = (req.query.category_id !== undefined) ? addSlashes(req.query.category_id) : "" ;
+    let task_id = (req.query.id !== undefined) ? addSlashes(req.query.id) : "" ;
     req.filter_params = {
         free_txt:free_txt,
-        category_id:category_id,
+        task_id:task_id,
     };
 
     let Query="SELECT *,DATE_FORMAT(due_date,'%d-%m-%y' ) AS nice_date FROM task";
@@ -76,13 +98,51 @@ async function GetTasksPageCounter(req,res,next){
     } catch (err){ console.log(err); }
     req.total_pages= Math.floor(total_rows / rowPerPage);
 
-    Query = "SELECT * FROM task";
+    // Query = "SELECT * FROM task";
+    Query = `SELECT *, DATE_FORMAT(due_date, '%d-%m-%y') AS nice_date FROM task`;
     Query += ` LIMIT ${page * rowPerPage},${rowPerPage} `;
-    req.users_data = [];
+    req.task_data  = [];
     try {
         [rows] = await promisePool.query(Query);
-        req.users_data = rows;
+        req.task_data  = rows;
     } catch (err) { console.log(err);}
+    next();
+}
+// =====================================================================================================================
+
+// Get One Task
+// =====================================================================================================================
+async function GetOneTask(req,res,next){
+    let id = parseInt(req.params.id);
+    if(id === NaN ||(id <= 0) ){
+        req.GoodOne = false;
+        return next();
+    }
+    req.GoodOne = true;
+
+    let Query =`SELECT * FROM task WHERE id = '${id}' `;
+    const promisePool = db_pool.promise();
+    let rows=[];
+    req.one_task_data=[];
+    try {
+        [rows] = await promisePool.query(Query);
+        if(rows.length > 0){ req.task_data = rows[0]; }
+    } catch (err) { console.log(err);}
+    next();
+}
+// =====================================================================================================================
+
+// Delete Task
+// =====================================================================================================================
+async function DeleteTask(req, res, next){
+    let id = parseInt(req.body.id);
+    if(id > 0) {
+        let Query =`DELETE FROM task WHERE id = '${id}' `;
+        const promisePool = db_pool.promise();
+        let rows = [];
+        try{ [rows] = await promisePool.query(Query); }
+        catch (err){ console.log(err) }
+    }
     next();
 }
 // =====================================================================================================================
@@ -97,10 +157,10 @@ async function HandleDone(req,res,next){
     let rows=[];
     try {
         [rows] = await promisePool.query(Query);
-        req.users_data = rows;
+        req.task_data = rows;
     } catch (err) { console.log(err);}
     next();
 }
 // =====================================================================================================================
 
-module.exports = { AddTask,GetTasks,GetTasksPageCounter,HandleDone }
+module.exports = { AddTask,GetAllTasks,GetTasksPageCounter,UpdateTask,DeleteTask,GetOneTask,HandleDone }

@@ -83,10 +83,10 @@ async function GetCateroyPageCounter(req,res,next){
 
     Query = "SELECT * FROM categories";
     Query += ` LIMIT ${page * rowPerPage},${rowPerPage} `;
-    req.users_data = [];
+    req.category_data = [];
     try {
         [rows] = await promisePool.query(Query);
-        req.users_data = rows;
+        req.category_data = rows;
     } catch (err) { console.log(err);}
     next();
 }

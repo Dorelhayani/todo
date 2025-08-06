@@ -85,6 +85,8 @@
             <th>Task Name</th>
             <th>Description</th>
             <th>Due Date</th>
+            <th>Edit</th>
+            <th>Delete</th>
             <th>Done</th>
         </tr>
         <% for(let tsk of tasks){ %>
@@ -92,6 +94,13 @@
                 <td style="<%= tsk.done ? 'text-decoration: line-through;' : '' %>"><%= tsk.name %></td>
                 <td style="<%= tsk.done ? 'text-decoration: line-through;' : '' %>"><%= tsk.description %></td>
                 <td><%= tsk.nice_date %></td>
+                <td><button onclick="location.href='/task/edit/<%= tsk.id %>'">Edit</button></td>
+                <td>
+                    <form action="/task/delete" method="post">
+                        <input type="hidden" name="id" value="<%=tsk.id%>">
+                        <button>Delete</button>
+                    </form>
+                </td>
                 <td>
                     <form action="/task/isdone/<%= tsk.id %>" method="post">
                         <input type="checkbox" name="done" value="1" onchange="this.form.submit()"  <%= tsk.done ? 'checked' : '' %> >
