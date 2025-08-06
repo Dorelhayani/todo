@@ -1,7 +1,4 @@
 let md5 = require('md5');
-
-// is Logged Function
-// =====================================================================================================================
 async function isLogged(req, res, next){
     const jwtToken = req.cookies.ImLogged;
     if (!jwtToken) return res.redirect("/auth/login");
@@ -11,19 +8,13 @@ async function isLogged(req, res, next){
             console.log("JWT error:", err);
             return res.redirect("/auth/login");
         }
-        let data = decodedToken.data;   // "1,dor"
+        let data = decodedToken.data;
         let parts = data.split(",");
         req.user_id = parts[0];
         req.name = parts[1];
         next();
     });
 }
-
-// =====================================================================================================================
-
-
-// Check Login Function
-// =====================================================================================================================
 async function CheckLogin(req, res, next){
     let name = (req.body.name !== undefined) ? addSlashes(req.body.name) : "";
     let password = (req.body.password !== undefined) ? req.body.password : "";
@@ -44,17 +35,9 @@ async function CheckLogin(req, res, next){
             'myPrivateKey',
             { expiresIn: 31*24*60*60 }); // in sec
         res.cookie("ImLogged", token, { maxAge: 31*24*60*60 * 1000, }); // 3hrs in ms
-
-        // console.log("Generated token:", token);
-        // console.log("Cookies in response:", res.getHeader("Set-Cookie"));
     }
     next();
 }
-// =====================================================================================================================
-
-
-// Create
-// =====================================================================================================================
 async function AddUser(req, res, next){
     let name = (req.body.name !== undefined) ? addSlashes(req.body.name): "";
     let password = (req.body.password !== undefined) ? req.body.password: "";
@@ -72,11 +55,6 @@ async function AddUser(req, res, next){
     catch (err){ console.log(err) }
     next();
 }
-// =====================================================================================================================
-
-
-// Update
-// =====================================================================================================================
 async function UpdateUser(req, res, next){
     let id = parseInt(req.params.id);
     let name = (req.body.name !== undefined) ? addSlashes(req.body.name): "";
@@ -99,18 +77,12 @@ async function UpdateUser(req, res, next){
     catch (err) { console.log(err);}
     next();
 }
-// =====================================================================================================================
-
-
-// Read - All Users
-// =====================================================================================================================
 async function GetAllUsers(req,res,next){
     let page = 0;
     let rowPerPage = 2
     if(req.query.p !== undefined) { page = parseInt(req.query.p); } //
-    req.page = page; // מחזיר לצד הקדימי את העמוד הנוכחי
+    req.page = page;
 
-    // page counter
     let rows = [];
     let Query = "SELECT COUNT(id) as cnt FROM users";
     const promisePool = db_pool.promise();
@@ -121,7 +93,6 @@ async function GetAllUsers(req,res,next){
     } catch (err){ console.log(err); }
     req.total_pages= Math.floor(total_rows / rowPerPage);
 
-    // get current page
     Query = "SELECT * FROM users";
     Query += ` LIMIT ${page * rowPerPage},${rowPerPage} `;
     req.users_data = [];
@@ -131,11 +102,6 @@ async function GetAllUsers(req,res,next){
     } catch (err) { console.log(err);}
     next();
 }
-// =====================================================================================================================
-
-
-// Read - One User
-// =====================================================================================================================
 async function GetOneUser(req,res,next){
     let id = parseInt(req.params.id);
     if(id === NaN ||(id <= 0) ){
@@ -154,11 +120,6 @@ async function GetOneUser(req,res,next){
     } catch (err) { console.log(err);}
     next();
 }
-// =====================================================================================================================
-
-
-// Delete
-// =====================================================================================================================
 async function DeleteUser(req,res,next){
     let id = parseInt(req.body.id);
     if(id > 0) {
@@ -170,5 +131,4 @@ async function DeleteUser(req,res,next){
     }
     next();
 }
-// =====================================================================================================================
 module.exports = { AddUser,GetOneUser,GetAllUsers,UpdateUser,DeleteUser, CheckLogin, isLogged}

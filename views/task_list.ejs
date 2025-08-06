@@ -15,65 +15,29 @@
     <H1><%= page_title %></H1>
     <label for="task_add">Add Task</label>
     <button onclick="location.href='/task/add'">Add Task</button>
-    <h3>Filter By Category</h3>
-    <table>
-        <tr>
-            <td colspan="55">
+    <br><br>
+
                 <form action="" method="get">
-
-                    <label for="description">Free Text</label>
-                    <input type="text" name="free_txt" id="free_txt" value="<% filter_params.free_txt %>">
-
-                    <label for="category_id">categories:</label>
+                    <label for="category_id"> <h4>Filter By Category</h4></label>
                     <select name="category_id" id="category_id">
 
-                        <option value="-1"
-                                <% if (filter_params.category_id === -1){__appened('selected = "1"'); }%>>
-                            ----categories list----
-                        </option>
-
+                        <option value="-1" <%= filter_params.category_id === -1 ? 'selected' : '' %>>All Categories</option>
                         <% for (let ctrs of categories) { %>
-                            <option value="<%= ctrs.id %>"
-                                    <% if (filter_params.category_id === ctrs.id){__appened('selected = "1"'); }%>>
-                                <%=ctrs.name%></option>
+                            <option value="<%= ctrs.id %>" <%= filter_params.category_id === ctrs.id ? 'selected' : '' %>><%= ctrs.name %></option>
                         <% } %>
-
                     </select>
                     <button>Filter</button>
                 </form>
-            </td>
-        </tr>
-    </table>
 
-    <h3>Filter By Task</h3>
-    <table>
-        <tr>
-            <td colspan="55">
-                <form action="" method="get">
-
-                    <label for="description">Free Text</label>
-                    <input type="text" name="free_txt" id="free_txt" value="<% filter_params.free_txt %>">
-
-                    <label for="task_id">Tasks:</label>
-                    <select name="tsk_id" id="tsk_id">
-
-                        <option value="-1"
-                                <% if (filter_params.id === -1){__appened('selected = "1"'); }%>>
-                            ----tasks list----
-                        </option>
-
-                        <% for (let tsk of tasks) { %>
-                            <option value="<%= tsk.id %>"
-                                    <% if (filter_params.id === tsk.id){__appened('selected = "1"'); }%>>
-                                <%=tsk.name%></option>
-                        <% } %>
-
-                    </select>
-                    <button>Filter</button>
-                </form>
-            </td>
-        </tr>
-    </table>
+    <form action="/task/list" method="get">
+        <label for="done"><h4>Filter By Task</h4></label>
+        <select name="done" id="done">
+            <option value="-1" <%= (filter_params.done === -1 ? "selected": "" )%> >All Tasks</option>
+            <option value="0" <%= (filter_params.done === 0 ? "selected": "" )%> >Not Done</option>
+            <option value="1" <%= (filter_params.done === 1 ? "selected": "" )%> >Done</option>
+        </select>
+        <button>Filter</button>
+    </form>
 
     <br>
     <br>
@@ -119,6 +83,9 @@
             </form>
         </td>
     </table>
+    <br><br>
+    <label for="home_page">Jump To Home Page</label>
+    <button onclick="location.href='/auth/home'">Home Page</button>
 </center>
 </body>
 </html>

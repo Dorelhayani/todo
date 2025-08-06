@@ -1,5 +1,3 @@
-// Add Task
-// =====================================================================================================================
 async function AddTask(req, res, next){
     let user_id = req.user_id;
     let category_id = (req.body.category_id !== undefined) ? Number(req.body.category_id) :  "" ;
@@ -24,10 +22,7 @@ async function AddTask(req, res, next){
     catch (err){ console.log(err) }
     next();
 }
-// =====================================================================================================================
 
-// Update Task
-// =====================================================================================================================
 async function UpdateTask(req, res, next){
     let id = parseInt(req.params.id);
     let name = addSlashes(req.body.name);
@@ -46,72 +41,7 @@ async function UpdateTask(req, res, next){
     catch (err) { console.log(err);}
     next();
 }
-// =====================================================================================================================
 
-// Get Task with nice_date format
-// =====================================================================================================================
-async function GetAllTasks(req,res,next){
-    let free_txt = (req.query.free_txt !== undefined) ? addSlashes(req.query.free_txt) : "" ;
-    let task_id = (req.query.id !== undefined) ? addSlashes(req.query.id) : "" ;
-    req.filter_params = {
-        free_txt:free_txt,
-        task_id:task_id,
-    };
-
-    let Query="SELECT *,DATE_FORMAT(due_date,'%d-%m-%y' ) AS nice_date FROM task";
-    let wh = "";
-
-    if(free_txt !== ""){
-        wh += (wh === "")? " WHERE " : " AND ";
-        wh += `description LIKE '%${free_txt}%'`
-    }
-
-    Query += wh;
-    Query += " ORDER BY due_date DESC"
-
-    const promisePool = db_pool.promise();
-    let rows=[];
-    req.task_data=[];
-    try {
-        [rows] = await promisePool.query(Query);
-        req.task_data=rows;
-    } catch (err) { console.log(err);}
-    next();
-}
-// =====================================================================================================================
-
-// Get Task - page counter , 10 tasks per page
-// =====================================================================================================================
-async function GetTasksPageCounter(req,res,next){
-    let page = 0;
-    let rowPerPage = 10;
-    if(req.query.p !== undefined) { page = parseInt(req.query.p); } //
-    req.page = page;
-
-    let rows = [];
-    let Query = "SELECT COUNT(id) as cnt FROM task";
-    const promisePool = db_pool.promise();
-    let total_rows = 0;
-    try {
-        [rows] = await promisePool.query(Query);
-        total_rows =rows[0].cnt;
-    } catch (err){ console.log(err); }
-    req.total_pages= Math.floor(total_rows / rowPerPage);
-
-    // Query = "SELECT * FROM task";
-    Query = `SELECT *, DATE_FORMAT(due_date, '%d-%m-%y') AS nice_date FROM task`;
-    Query += ` LIMIT ${page * rowPerPage},${rowPerPage} `;
-    req.task_data  = [];
-    try {
-        [rows] = await promisePool.query(Query);
-        req.task_data  = rows;
-    } catch (err) { console.log(err);}
-    next();
-}
-// =====================================================================================================================
-
-// Get One Task
-// =====================================================================================================================
 async function GetOneTask(req,res,next){
     let id = parseInt(req.params.id);
     if(id === NaN ||(id <= 0) ){
@@ -130,10 +60,7 @@ async function GetOneTask(req,res,next){
     } catch (err) { console.log(err);}
     next();
 }
-// =====================================================================================================================
 
-// Delete Task
-// =====================================================================================================================
 async function DeleteTask(req, res, next){
     let id = parseInt(req.body.id);
     if(id > 0) {
@@ -145,10 +72,7 @@ async function DeleteTask(req, res, next){
     }
     next();
 }
-// =====================================================================================================================
 
-// handle Done
-// =====================================================================================================================
 async function HandleDone(req,res,next){
     let id = parseInt(req.params.id);
     let done = req.body.done? 1 : 0 ;
@@ -161,6 +85,55 @@ async function HandleDone(req,res,next){
     } catch (err) { console.log(err);}
     next();
 }
-// =====================================================================================================================
+async function HandleFilteredTasks(req, res, next) {
+    const promisePool = db_pool.promise();
 
-module.exports = { AddTask,GetAllTasks,GetTasksPageCounter,UpdateTask,DeleteTask,GetOneTask,HandleDone }
+    let filters = [];
+    let params = [];
+    req.filter_params = {};
+
+    if (req.query.done !== undefined && req.query.done !== "-1") {
+        filters.push("done = ?");
+        params.push(parseInt(req.query.done));
+        req.filter_params.done = parseInt(req.query.done);
+    } else {
+        req.filter_params.done = -1;
+    }
+
+    if (req.query.category_id !== undefined && req.query.category_id !== "-1") {
+        filters.push("category_id = ?");
+        params.push(parseInt(req.query.category_id));
+        req.filter_params.category_id = parseInt(req.query.category_id);
+    } else { req.filter_params.category_id = -1; }
+
+    const page = req.query.p !== undefined ? parseInt(req.query.p) : 0;
+    const rowPerPage = 10;
+    req.page = page;
+
+    let whereClause = filters.length > 0 ? "WHERE " + filters.join(" AND ") : "";
+
+    let countQuery = `SELECT COUNT(*) as cnt FROM task ${whereClause}`;
+    let [countRows] = await promisePool.query(countQuery, params);
+    req.total_pages = Math.floor(countRows[0].cnt / rowPerPage);
+
+    let dataQuery = `
+        SELECT *, DATE_FORMAT(due_date, '%d-%m-%Y') AS nice_date 
+        FROM task 
+        ${whereClause} 
+        ORDER BY due_date DESC 
+        LIMIT ?, ?
+    `;
+    params.push(page * rowPerPage, rowPerPage);
+
+    try {
+        const [rows] = await promisePool.query(dataQuery, params);
+        req.task_data = rows;
+    } catch (err) {
+        console.error(err);
+        req.task_data = [];
+    }
+
+    next();
+}
+
+module.exports = { AddTask,UpdateTask,DeleteTask,GetOneTask,HandleDone,HandleFilteredTasks }

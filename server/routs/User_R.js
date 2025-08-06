@@ -2,16 +2,8 @@ const express = require('express');
 const router = express.Router()
 module.exports = router;
 const users_MID = require("../middleware/User_Mid");
-
-// Create
-// =====================================================================================================================
 router.get("/add", (req,res)=>{ res.render("usrs_add",{ data: {} }); });
 router.post("/add",[users_MID.AddUser], (req, res) => { res.redirect("/users/list"); });
-// =====================================================================================================================
-
-
-// Read
-// =====================================================================================================================
 router.get("/list",[users_MID.GetAllUsers],(req,res)=>{
     res.render("usrs_list",{
         page_title:"Users List",
@@ -20,19 +12,9 @@ router.get("/list",[users_MID.GetAllUsers],(req,res)=>{
         total_pages: req.total_pages,
     });
 });
-// =====================================================================================================================
 
-
-// Delete
-// =====================================================================================================================
 router.post("/delete", [users_MID.DeleteUser] ,(req,res)=>{ res.redirect("/users/list"); })
-// =====================================================================================================================
-
-
-// Update
-// =====================================================================================================================
 router.get("/edit/:id",[users_MID.GetOneUser], (req,res)=>{
     if(req.GoodOne){ res.render("usrs_add",{ data: req.one_user_data, }); }
     else res.redirect("/users/list"); });
 router.post("/edit/:id",[users_MID.UpdateUser], (req, res) => { res.redirect("/users/list"); });
-// =====================================================================================================================

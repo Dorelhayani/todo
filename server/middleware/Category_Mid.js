@@ -1,5 +1,4 @@
-// Create
-// =====================================================================================================================
+
 async function AddCategory(req, res, next){
     let name = addSlashes(req.body.name);
     let Query =`INSERT INTO categories ( name) VALUES ('${name}') ` ;
@@ -11,11 +10,6 @@ async function AddCategory(req, res, next){
     catch (err){ console.log(err) }
     next();
 }
-// =====================================================================================================================
-
-
-// Update
-// =====================================================================================================================
 async function UpdateCategory(req, res, next){
     let id = parseInt(req.params.id);
     if(id <= 0) {
@@ -31,11 +25,6 @@ async function UpdateCategory(req, res, next){
     catch (err) { console.log(err);}
     next();
 }
-// =====================================================================================================================
-
-
-// Read - filter Categories
-// =====================================================================================================================
 async function GetAllCategories(req,res,next){
     let filter = (req.query.filter !== undefined) ? req.query.filter : "";
     let Query="SELECT * FROM categories";
@@ -58,13 +47,8 @@ async function GetAllCategories(req,res,next){
     } catch (err) {
         console.log(err);
     }
-
     next();
 }
-// =====================================================================================================================
-
-// Read - filter Categories
-// =====================================================================================================================
 async function GetCateroyPageCounter(req,res,next){
     let page = 0;
     let rowPerPage = 10;
@@ -90,10 +74,6 @@ async function GetCateroyPageCounter(req,res,next){
     } catch (err) { console.log(err);}
     next();
 }
-// =====================================================================================================================
-
-// Get Category Name
-// =====================================================================================================================
 async function GetCategoryName(req,res,next){
     let Query="SELECT * FROM categories";
 
@@ -108,14 +88,8 @@ async function GetCategoryName(req,res,next){
     } catch (err) {
         console.log(err);
     }
-
     next();
 }
-// =====================================================================================================================
-
-
-// Get One Course
-// =====================================================================================================================
 async function GetOneCategory(req,res,next){
     let id = parseInt(req.params.id);
     if(id === NaN ||(id <= 0) ){
@@ -134,11 +108,6 @@ async function GetOneCategory(req,res,next){
     } catch (err) { console.log(err);}
     next();
 }
-// =====================================================================================================================
-
-
-// Delete
-// =====================================================================================================================
 async function DeleteCategory(req,res,next){
     let id = parseInt(req.body.id);
     if(id > 0) {
@@ -150,6 +119,5 @@ async function DeleteCategory(req,res,next){
     }
     next();
 }
-// =====================================================================================================================
 
 module.exports = { AddCategory,UpdateCategory,GetAllCategories,GetCateroyPageCounter,GetCategoryName,GetOneCategory, DeleteCategory, }
