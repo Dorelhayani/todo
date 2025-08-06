@@ -5,17 +5,17 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-
+    <title><%= page_title %></title>
     <style>
         td,th{border: 1px solid black;}
     </style>
 </head>
 <body>
 <center>
-    <title><%= page_title %></title>
     <H1><%= page_title %></H1>
     <label for="task_add">Add Task</label>
-    <button onclick="location.href='/task/plan'">Add Task</button>
+    <button onclick="location.href='/task/add'">Add Task</button>
+    <h3>Filter By Category</h3>
     <table>
         <tr>
             <td colspan="55">
@@ -25,7 +25,7 @@
                     <input type="text" name="free_txt" id="free_txt" value="<% filter_params.free_txt %>">
 
                     <label for="category_id">categories:</label>
-                    <select name="crs_id" id="crs_id">
+                    <select name="category_id" id="category_id">
 
                         <option value="-1"
                                 <% if (filter_params.category_id === -1){__appened('selected = "1"'); }%>>
@@ -44,33 +44,71 @@
             </td>
         </tr>
     </table>
-    <br>
-    <br>
+
+    <h3>Filter By Task</h3>
     <table>
         <tr>
-            <th>Category</th>
+            <td colspan="55">
+                <form action="" method="get">
+
+                    <label for="description">Free Text</label>
+                    <input type="text" name="free_txt" id="free_txt" value="<% filter_params.free_txt %>">
+
+                    <label for="task_id">Tasks:</label>
+                    <select name="tsk_id" id="tsk_id">
+
+                        <option value="-1"
+                                <% if (filter_params.id === -1){__appened('selected = "1"'); }%>>
+                            ----tasks list----
+                        </option>
+
+                        <% for (let tsk of tasks) { %>
+                            <option value="<%= tsk.id %>"
+                                    <% if (filter_params.id === tsk.id){__appened('selected = "1"'); }%>>
+                                <%=tsk.name%></option>
+                        <% } %>
+
+                    </select>
+                    <button>Filter</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <br>
+    <br>
+
+    <h2>Current Category: <%= category_name %></h2>
+
+    <table>
+        <tr>
+            <th>Task Name</th>
             <th>Description</th>
             <th>Due Date</th>
             <th>Done</th>
         </tr>
-        <% for(let tsk of task_data){ %>
+        <% for(let tsk of tasks){ %>
             <tr>
-                <td><%= category_name[tsk.category_id] %></td>
-                <td><%= tsk.description %></td>
+                <td style="<%= tsk.done ? 'text-decoration: line-through;' : '' %>"><%= tsk.name %></td>
+                <td style="<%= tsk.done ? 'text-decoration: line-through;' : '' %>"><%= tsk.description %></td>
                 <td><%= tsk.nice_date %></td>
-                <td><%= tsk.done %></td>
-
-                <td colspan="100" class="centered">
-                    <form action="" method="get">
-                        <% if (page > 0) { %> <button name="p" value="<%= page-1 %>">Back</button> <% }%>
-                        Page  <%= page+1%> / <%= total_pages+1 %>
-
-                        <% if(page < total_pages) { %>
-                            <button name="p" value="<%= page+1 %>">Next Page</button>
-                        <% } %>
+                <td>
+                    <form action="/task/isdone/<%= tsk.id %>" method="post">
+                        <input type="checkbox" name="done" value="1" onchange="this.form.submit()"  <%= tsk.done ? 'checked' : '' %> >
                     </form>
+                </td>
             </tr>
         <% } %>
+        <td colspan="100" class="centered">
+            <form action="" method="get">
+                <% if (page > 0) { %> <button name="p" value="<%= page-1 %>">Back</button> <% }%>
+                Page  <%= page+1%> / <%= total_pages+1 %>
+
+                <% if(page < total_pages) { %>
+                    <button name="p" value="<%= page+1 %>">Next Page</button>
+                <% } %>
+            </form>
+        </td>
     </table>
 </center>
 </body>

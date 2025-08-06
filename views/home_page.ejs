@@ -6,15 +6,34 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home Page</title>
+    <style>
+        td,th{border: 1px solid black;}
+        .centered { text-align: center}
+    </style>
 </head>
 <body>
 <center>
     <h2>Welcome, <%= name %>!</h2>
-    <h4>Add Category</h4>
-    <button onclick="location.href='/category/add'">Add Category</button>
+    <table>
+<!--        <tr>-->
+<!--        <th>Add Category</th>-->
+<!--        <th>Category List</th>-->
+<!--        <th>Add Task</th>-->
+<!--        <th>Task List</th>-->
+<!--        </tr>-->
 
-    <h4>Add Task</h4>
-    <button onclick="location.href='/task/add'">Add Task</button>
+        <tr colspan="100" class="centered">
+            <td><button onclick="location.href='/category/add'">Add Category</button></td>
+            <td><button onclick="location.href='/category/list'">Category List</button></td>
+            <td><button onclick="location.href='/task/add'">Add Task</button></td>
+            <td><button onclick="location.href='/task/list'">Task List</button></td>
+        </tr>
+    </table>
+
+
+
+
+
 
 <!--    <button onclick="location.href='/auth/login'">Sign In</button>-->
 <!--<h4>Admin Access</h4>-->

@@ -34,7 +34,7 @@ async function UpdateCategory(req, res, next){
 // =====================================================================================================================
 
 
-// Read
+// Read - filter Categories
 // =====================================================================================================================
 async function GetAllCategories(req,res,next){
     let filter = (req.query.filter !== undefined) ? req.query.filter : "";
@@ -63,8 +63,36 @@ async function GetAllCategories(req,res,next){
 }
 // =====================================================================================================================
 
+// Read - filter Categories
+// =====================================================================================================================
+async function GetCateroyPageCounter(req,res,next){
+    let page = 0;
+    let rowPerPage = 10;
+    if(req.query.p !== undefined) { page = parseInt(req.query.p); } //
+    req.page = page;
 
-// Get Course Name
+    let rows = [];
+    let Query = "SELECT COUNT(id) as cnt FROM categories";
+    const promisePool = db_pool.promise();
+    let total_rows = 0;
+    try {
+        [rows] = await promisePool.query(Query);
+        total_rows =rows[0].cnt;
+    } catch (err){ console.log(err); }
+    req.total_pages= Math.floor(total_rows / rowPerPage);
+
+    Query = "SELECT * FROM categories";
+    Query += ` LIMIT ${page * rowPerPage},${rowPerPage} `;
+    req.users_data = [];
+    try {
+        [rows] = await promisePool.query(Query);
+        req.users_data = rows;
+    } catch (err) { console.log(err);}
+    next();
+}
+// =====================================================================================================================
+
+// Get Category Name
 // =====================================================================================================================
 async function GetCategoryName(req,res,next){
     let Query="SELECT * FROM categories";
@@ -124,4 +152,4 @@ async function DeleteCategory(req,res,next){
 }
 // =====================================================================================================================
 
-module.exports = { AddCategory,UpdateCategory,GetAllCategories,GetCategoryName,GetOneCategory, DeleteCategory, }
+module.exports = { AddCategory,UpdateCategory,GetAllCategories,GetCateroyPageCounter,GetCategoryName,GetOneCategory, DeleteCategory, }

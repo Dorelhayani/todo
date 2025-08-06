@@ -5,18 +5,19 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Adding Activity</title>
+    <title><%= page_title %></title>
     <style>
         td,th{border: 1px solid black;}
     </style>
 </head>
 <body>
 <center>
-    <h1>Add Task</h1>
+    <H1><%= page_title %></H1>
     <form action="" method="post">
         <table>
             <tr>
-                <th>task</th>
+                <th>Select Category</th>
+                <th>Task Name</th>
                 <th>Description</th>
                 <th>Due Date</th>
                 <th>Save</th>
@@ -29,6 +30,7 @@
                         <% } %>
                     </select>
                 </td>
+                <td> <input type="text" name="name" id="usrs_name" value="<%= data.name %>" /> </td>
                 <td> <textarea name="description" id="description" value="<%= data.description %>"> </textarea> </td>
                 <td> <input type="date" name="due_date" id="due_date" value="<%= data.due_date %>" /> </td>
                 <td><button name="btn" value="1">Save</button> </td>

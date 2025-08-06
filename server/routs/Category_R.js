@@ -17,7 +17,7 @@ router.post("/add",[Category_MID.AddCategory], (req, res) => { res.redirect("/ca
 
 // Read
 // =====================================================================================================================
-router.get("/list",[Category_MID.GetAllCategories],(req,res)=>{
+router.get("/list",[Category_MID.GetAllCategories, Category_MID.GetCateroyPageCounter],(req,res)=>{
     res.render("category_list",{
         page_title:"Categories",
         categories: req.category_data,
@@ -37,7 +37,10 @@ router.post("/delete", [Category_MID.DeleteCategory] ,(req,res)=>{ res.redirect(
 // Update
 // =====================================================================================================================
 router.get("/edit/:id",[Category_MID.GetOneCategory], (req,res)=>{
-    if(req.GoodOne){ res.render("category_add",{ data: req.one_category_data,});}
+    if(req.GoodOne){ res.render("category_add",{
+        data: req.one_category_data,
+        page_title: "Edit Category"
+    });}
     else res.redirect("/category/list"); });
 router.post("/edit/:id",[Category_MID.UpdateCategory], (req, res) => { res.redirect("/category/list"); });
 // =====================================================================================================================

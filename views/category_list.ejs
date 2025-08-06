@@ -14,24 +14,18 @@
 <center>
     <H1><%= page_title %></H1>
     <button onclick="location.href='/category/add'">Add Category</button>
-    <button onclick="location.href='/task/add'">Add Task</button>
     <table>
         <tr>
-            <th>category name</th>
+            <th>category</th>
+            <th>Add Task</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
         <% for(let ctrs of categories){ %>
             <tr>
                 <td><%= ctrs.name %></td>
-
-                <td>
-<!--                    <form action="/category/Edit" method="post">-->
-<!--                        <input type="hidden" name="id" value="<%=ctrs.id%>">-->
-<!--                        <button>Edit</button>-->
-<!--                    </form>-->
-                    <button onclick="location.href='/category/edit'">Edit</button>
-                </td>
+                <td> <button onclick="location.href='/task/add'">Add Task</button> </td>
+                <td> <button onclick="location.href='/category/edit/<%= ctrs.id %>'">Edit</button> </td>
 
                 <td>
                     <form action="/category/delete" method="post">

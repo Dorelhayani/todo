@@ -13,7 +13,6 @@ async function isLogged(req, res, next){
         }
         let data = decodedToken.data;   // "1,dor"
         let parts = data.split(",");
-        console.log("data" + data);
         req.user_id = parts[0];
         req.name = parts[1];
         next();
