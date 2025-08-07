@@ -1,53 +1,136 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><%= page_title %></title>
     <style>
-        td,th{border: 1px solid black;}
-        .centered { text-align: center}
+        * {
+            font-family: Helvetica, Arial, sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 90%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #e0e0e0;
+            color: #333;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-edit {
+            background-color: #ffc107; /* yellow */
+            color: #000;
+        }
+
+        .btn-delete {
+            background-color: #dc3545; /* red */
+            color: #fff;
+        }
+
+        .btn-page {
+            background-color: #888;
+            color: #fff;
+            margin: 5px;
+        }
+
+        .btn-home {
+            background-color: #007bff; /* blue */
+            color: white;
+            padding: 8px 16px;
+            margin-top: 20px;
+        }
+
+        .pagination {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .home-nav {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .home-nav label {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
-<center>
-    <H1><%= page_title %></H1>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>type</th>
-            <th>Edit</th>
-            <th>Delete</th>
-        </tr>
-        <% for(let urs of users){ %>
-            <tr>
-                <td><%= urs.name %></td>
-                <td><%= urs.type %></td>
-                <td> <button onclick="location.href='/users/edit/<%= urs.id %>'">Edit</button> </td>
-                <td>
-                    <form action="/users/delete" method="post">
-                        <input  type="hidden" name="id" value="<%=urs.id%>">
-                        <button>Delete</button>
-                    </form>
-                </td>
-            </tr>
-        <% } %>
-        <td colspan="100" class="centered">
-            <form action="" method="get">
-                <% if (page > 0) { %> <button name="p" value="<%= page-1 %>">Back</button> <% }%>
-                Page  <%= page+1%> / <%= total_pages+1 %>
+<h1><%= page_title %></h1>
 
-                <% if(page < total_pages) { %>
-                    <button name="p" value="<%= page+1 %>">Next Page</button>
-                <% } %>
-            </form>
-        </td>
-    </table>
-    <br><br>
-    <label for="home_page">Jump To Home Page</label>
-    <button onclick="location.href='/auth/home'">Home Page</button>
-</center>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+
+    <% for(let urs of users){ %>
+        <tr>
+            <td><%= urs.name %></td>
+            <td><%= urs.type %></td>
+            <td>
+                <button class="btn-edit" onclick="location.href='/users/edit/<%= urs.id %>'">Edit</button>
+            </td>
+            <td>
+                <form action="/users/delete" method="post">
+                    <input type="hidden" name="id" value="<%= urs.id %>">
+                    <button class="btn-delete">Delete</button>
+                </form>
+            </td>
+        </tr>
+    <% } %>
+</table>
+
+<div class="pagination">
+    <form action="" method="get">
+        <% if (page > 0) { %>
+            <button class="btn-page" name="p" value="<%= page - 1 %>">Back</button>
+        <% } %>
+        Page <%= page + 1 %> / <%= total_pages + 1 %>
+        <% if (page < total_pages) { %>
+            <button class="btn-page" name="p" value="<%= page + 1 %>">Next Page</button>
+        <% } %>
+    </form>
+</div>
+
+<div class="home-nav">
+    <button class="btn-home" onclick="location.href='/auth/home'">Home Page</button>
+</div>
 </body>
 </html>

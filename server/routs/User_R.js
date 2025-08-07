@@ -3,7 +3,7 @@ const router = express.Router()
 module.exports = router;
 const users_MID = require("../middleware/User_Mid");
 router.get("/add", (req,res)=>{ res.render("usrs_add",{ data: {} }); });
-router.post("/add",[users_MID.AddUser], (req, res) => { res.redirect("/users/list"); });
+router.post("/add",[users_MID.AddUser], (req, res) => { res.redirect("/auth/home"); });
 router.get("/list",[users_MID.GetAllUsers],(req,res)=>{
     res.render("usrs_list",{
         page_title:"Users List",

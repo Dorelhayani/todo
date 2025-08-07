@@ -1,10 +1,10 @@
 async function AddTask(req, res, next){
-    let user_id = req.user_id;
+    let user_id = parseInt(req.user_id);
     let category_id = (req.body.category_id !== undefined) ? Number(req.body.category_id) :  "" ;
     let name = (req.body.name !== undefined) ? addSlashes(req.body.name): "";
     let description = (req.body.description !== undefined) ? addSlashes(req.body.description) : "";
     let due_date = (req.body.due_date !== undefined) ? addSlashes(req.body.due_date) : "";
-    let done = 1;
+    let done = 0;
 
     let Query = "INSERT INTO task";
     Query +="(`user_id`, `category_id`, `name`, `description`, `due_date`, `done`) ";
@@ -25,6 +25,7 @@ async function AddTask(req, res, next){
 
 async function UpdateTask(req, res, next){
     let id = parseInt(req.params.id);
+    let user_id = parseInt(req.user_id);
     let name = addSlashes(req.body.name);
     let description = (req.body.description !== undefined) ? addSlashes(req.body.description) : "";
     let due_date = (req.body.due_date !== undefined) ? addSlashes(req.body.due_date) : "";
@@ -34,7 +35,7 @@ async function UpdateTask(req, res, next){
         return next();
     }
     req.GoodOne = true;
-    let Query = `UPDATE task SET name='${name}', description = '${description}', due_date ='${due_date}'  WHERE id='${id}'`;
+    let Query = `UPDATE task SET name='${name}', description = '${description}', due_date ='${due_date}'  WHERE id='${id}' AND user_id = '${user_id}'`;
     const promisePool = db_pool.promise();
     let rows=[];
     try { [rows] = await promisePool.query(Query);}
@@ -44,18 +45,19 @@ async function UpdateTask(req, res, next){
 
 async function GetOneTask(req,res,next){
     let id = parseInt(req.params.id);
+    let user_id = parseInt(req.user_id);
     if(id === NaN ||(id <= 0) ){
         req.GoodOne = false;
         return next();
     }
     req.GoodOne = true;
 
-    let Query =`SELECT * FROM task WHERE id = '${id}' `;
+    let Query =`SELECT * FROM task WHERE id = '${id}' AND user_id = '${user_id}'`;
     const promisePool = db_pool.promise();
     let rows=[];
     req.one_task_data=[];
     try {
-        [rows] = await promisePool.query(Query);
+        [rows] = await promisePool.query(Query, [id, req.user_id]);
         if(rows.length > 0){ req.task_data = rows[0]; }
     } catch (err) { console.log(err);}
     next();
@@ -63,8 +65,9 @@ async function GetOneTask(req,res,next){
 
 async function DeleteTask(req, res, next){
     let id = parseInt(req.body.id);
+    let user_id = parseInt(req.user_id);
     if(id > 0) {
-        let Query =`DELETE FROM task WHERE id = '${id}' `;
+        let Query =`DELETE FROM task WHERE id = '${id}' AND user_id = '${user_id}' `;
         const promisePool = db_pool.promise();
         let rows = [];
         try{ [rows] = await promisePool.query(Query); }
@@ -75,9 +78,10 @@ async function DeleteTask(req, res, next){
 
 async function HandleDone(req,res,next){
     let id = parseInt(req.params.id);
+    let user_id = parseInt(req.user_id);
     let done = req.body.done? 1 : 0 ;
     const promisePool = db_pool.promise();
-    let Query = `UPDATE task SET done='${done}' WHERE id='${id}'`;
+    let Query = `UPDATE task SET done='${done}' WHERE id='${id}' AND user_id = '${user_id}'`;
     let rows=[];
     try {
         [rows] = await promisePool.query(Query);
@@ -88,8 +92,8 @@ async function HandleDone(req,res,next){
 async function HandleFilteredTasks(req, res, next) {
     const promisePool = db_pool.promise();
 
-    let filters = [];
-    let params = [];
+    let filters = ["user_id = ?"];
+    let params = [req.user_id];
     req.filter_params = {};
 
     if (req.query.done !== undefined && req.query.done !== "-1") {

@@ -3,52 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+          content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><%= page_title %></title>
     <style>
-        td,th{border: 1px solid black;}
+        body { font-family: Arial, sans-serif; }
+        table { border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid black; padding: 8px 16px; text-align: center; }
+        button { padding: 6px 12px; margin: 4px; }
+        h1 { margin-bottom: 10px; }
     </style>
 </head>
 <body>
 <center>
-    <H1><%= page_title %></H1>
-    <button onclick="location.href='/category/add'">Add Category</button>
+    <h1><%= page_title %></h1>
+
+    <label for="add_category">Add Category</label>
+    <button onclick="location.href='/category/add'" id="add_category">Add Category</button>
+
     <table>
         <tr>
-            <th>category</th>
+            <th>Category</th>
             <th>Add Task</th>
             <th>Edit</th>
             <th>Delete</th>
         </tr>
-        <% for(let ctrs of categories){ %>
+        <% for(let ctrs of categories) { %>
             <tr>
                 <td><%= ctrs.name %></td>
-                <td> <button onclick="location.href='/task/add'">Add Task</button> </td>
-                <td> <button onclick="location.href='/category/edit/<%= ctrs.id %>'">Edit</button> </td>
-
+                <td><button onclick="location.href='/task/add'">Add Task</button></td>
+                <td><button onclick="location.href='/category/edit/<%= ctrs.id %>'">Edit</button></td>
                 <td>
                     <form action="/category/delete" method="post">
-                        <input type="hidden" name="id" value="<%=ctrs.id%>">
+                        <input type="hidden" name="id" value="<%= ctrs.id %>">
                         <button>Delete</button>
                     </form>
                 </td>
             </tr>
         <% } %>
-        <td colspan="100" class="centered">
-            <form action="" method="get">
-                <% if (page > 0) { %> <button name="p" value="<%= page-1 %>">Back</button> <% }%>
-                Page  <%= page+1%> / <%= total_pages+1 %>
-
-                <% if(page < total_pages) { %>
-                    <button name="p" value="<%= page+1 %>">Next Page</button>
-                <% } %>
-            </form>
-        </td>
+        <tr>
+            <td colspan="100">
+                <form action="" method="get">
+                    <% if (page > 0) { %>
+                        <button name="p" value="<%= page - 1 %>">Back</button>
+                    <% } %>
+                    Page <%= page + 1 %> / <%= total_pages + 1 %>
+                    <% if (page < total_pages) { %>
+                        <button name="p" value="<%= page + 1 %>">Next Page</button>
+                    <% } %>
+                </form>
+            </td>
+        </tr>
     </table>
+
     <br><br>
-    <label for="home_page">Jump To Home Page</label>
-    <button onclick="location.href='/auth/home'">Home Page</button>
+    <button onclick="location.href='/auth/home'" id="home_page">Home Page</button>
 </center>
 </body>
 </html>

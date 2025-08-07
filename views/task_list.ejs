@@ -3,34 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+          content="width=device-width, initial-scale=1.0">
     <title><%= page_title %></title>
     <style>
-        td,th{border: 1px solid black;}
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f6f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2 {
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        center {
+            display: block;
+            margin: auto;
+            width: 90%;
+            max-width: 1000px;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px #ccc;
+            border-radius: 8px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px 12px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #eee;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin: 3px;
+            cursor: pointer;
+        }
+
+        form {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        select {
+            padding: 5px;
+            margin: 5px;
+        }
+
+        .centered {
+            text-align: center;
+        }
+
+        .line-through {
+            text-decoration: line-through;
+            color: rgb(128, 128, 128);
+        }
+
+        hr {
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
 <center>
-    <H1><%= page_title %></H1>
-    <label for="task_add">Add Task</label>
-    <button onclick="location.href='/task/add'">Add Task</button>
-    <br><br>
+    <h1><%= page_title %></h1>
 
-                <form action="" method="get">
-                    <label for="category_id"> <h4>Filter By Category</h4></label>
-                    <select name="category_id" id="category_id">
+    <button onclick="location.href='/task/add'">➕ Add Task</button>
 
-                        <option value="-1" <%= filter_params.category_id === -1 ? 'selected' : '' %>>All Categories</option>
-                        <% for (let ctrs of categories) { %>
-                            <option value="<%= ctrs.id %>" <%= filter_params.category_id === ctrs.id ? 'selected' : '' %>><%= ctrs.name %></option>
-                        <% } %>
-                    </select>
-                    <button>Filter</button>
-                </form>
+    <hr>
+
+    <form action="" method="get">
+        <h4>Filter By Category</h4>
+        <select name="category_id" id="category_id">
+            <option value="-1" <%= filter_params.category_id === -1 ? 'selected' : '' %>>All Categories</option>
+            <% for (let ctrs of categories) { %>
+                <option value="<%= ctrs.id %>" <%= filter_params.category_id === ctrs.id ? 'selected' : '' %>><%= ctrs.name %></option>
+            <% } %>
+        </select>
+        <button>Filter</button>
+    </form>
 
     <form action="/task/list" method="get">
-        <label for="done"><h4>Filter By Task</h4></label>
+        <h4>Filter By Task</h4>
         <select name="done" id="done">
             <option value="-1" <%= (filter_params.done === -1 ? "selected": "" )%> >All Tasks</option>
             <option value="0" <%= (filter_params.done === 0 ? "selected": "" )%> >Not Done</option>
@@ -39,13 +104,11 @@
         <button>Filter</button>
     </form>
 
-    <br>
-    <br>
-
     <h2>Current Category: <%= category_name %></h2>
 
     <table>
         <tr>
+            <th>Category Name</th>
             <th>Task Name</th>
             <th>Description</th>
             <th>Due Date</th>
@@ -53,12 +116,16 @@
             <th>Delete</th>
             <th>Done</th>
         </tr>
-        <% for(let tsk of tasks){ %>
+
+        <% for(let tsk of task_data){ %>
             <tr>
-                <td style="<%= tsk.done ? 'text-decoration: line-through;' : '' %>"><%= tsk.name %></td>
-                <td style="<%= tsk.done ? 'text-decoration: line-through;' : '' %>"><%= tsk.description %></td>
+                <td><%= category_name[tsk.category_id] %></td>
+                <td class="<%= tsk.done ? 'line-through' : '' %>"><%= tsk.name %></td>
+                <td class="<%= tsk.done ? 'line-through' : '' %>"><%= tsk.description %></td>
                 <td><%= tsk.nice_date %></td>
-                <td><button onclick="location.href='/task/edit/<%= tsk.id %>'">Edit</button></td>
+                <td>
+                    <button onclick="location.href='/task/edit/<%= tsk.id %>'">Edit</button>
+                </td>
                 <td>
                     <form action="/task/delete" method="post">
                         <input type="hidden" name="id" value="<%=tsk.id%>">
@@ -67,25 +134,29 @@
                 </td>
                 <td>
                     <form action="/task/isdone/<%= tsk.id %>" method="post">
-                        <input type="checkbox" name="done" value="1" onchange="this.form.submit()"  <%= tsk.done ? 'checked' : '' %> >
+                        <input type="checkbox" name="done" value="1" onchange="this.form.submit()" <%= tsk.done ? 'checked' : '' %> >
                     </form>
                 </td>
             </tr>
         <% } %>
-        <td colspan="100" class="centered">
-            <form action="" method="get">
-                <% if (page > 0) { %> <button name="p" value="<%= page-1 %>">Back</button> <% }%>
-                Page  <%= page+1%> / <%= total_pages+1 %>
 
-                <% if(page < total_pages) { %>
-                    <button name="p" value="<%= page+1 %>">Next Page</button>
-                <% } %>
-            </form>
-        </td>
+        <tr>
+            <td colspan="6" class="centered">
+                <form action="" method="get">
+                    <% if (page > 0) { %>
+                        <button name="p" value="<%= page-1 %>">⬅ Back</button>
+                    <% } %>
+                    Page <%= page+1%> / <%= total_pages+1 %>
+                    <% if(page < total_pages) { %>
+                        <button name="p" value="<%= page+1 %>">Next ➡</button>
+                    <% } %>
+                </form>
+            </td>
+        </tr>
     </table>
-    <br><br>
-    <label for="home_page">Jump To Home Page</label>
-    <button onclick="location.href='/auth/home'">Home Page</button>
+    <hr>
+
+    <button onclick="location.href='/auth/home'">🏠 Home Page</button>
 </center>
 </body>
 </html>

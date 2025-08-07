@@ -2,41 +2,122 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><%= page_title %></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        td,th{border: 1px solid black;}
+        * {
+            font-family: Helvetica, Arial, sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            min-width: 700px;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ccc;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="date"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 60px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            margin: 20px;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-<center>
-    <H1><%= page_title %></H1>
-    <form action="" method="post">
-        <table>
-            <tr>
-                <th>Select Category</th>
-                <th>Task Name</th>
-                <th>Description</th>
-                <th>Due Date</th>
-                <th>Save</th>
-            </tr>
-            <tr>
-                <td>
-                    <select name="category_id" id="category_id">
-                        <% for(let ctrs of categories){ %>
-                            <option value="<%= ctrs.id %>"><%= ctrs.name %></option>
-                        <% } %>
-                    </select>
-                </td>
-                <td> <input type="text" name="name" id="usrs_name" value="<%= data.name %>" /> </td>
-                <td> <textarea name="description" id="description" value="<%= data.description %>"> </textarea> </td>
-                <td> <input type="date" name="due_date" id="due_date" value="<%= data.due_date %>" /> </td>
-                <td><button name="btn" value="1">Save</button> </td>
-            </tr>
-        </table>
-    </form>
-</center>
+<h1><%= page_title %></h1>
+<form action="" method="post">
+    <table>
+        <tr>
+            <th>Select Category</th>
+            <th>Task Name</th>
+            <th>Description</th>
+            <th>Due Date</th>
+            <th>Save</th>
+        </tr>
+        <tr>
+            <td>
+                <select name="category_id" id="category_id">
+                    <% for(let ctrs of categories){ %>
+                        <option value="<%= ctrs.id %>"><%= ctrs.name %></option>
+                    <% } %>
+                </select>
+            </td>
+            <td>
+                <input type="text" name="name" id="usrs_name" value="<%= data.name %>" />
+            </td>
+            <td>
+                <textarea name="description" id="description"><%= data.description %></textarea>
+            </td>
+            <td>
+                <input type="date" name="due_date" id="due_date" value="<%= data.due_date %>" />
+            </td>
+            <td>
+                <button name="btn" value="1">Save</button>
+            </td>
+        </tr>
+    </table>
+</form>
+<button onclick="location.href='/auth/home'" id="home_page">Home Page</button>
 </body>
 </html>

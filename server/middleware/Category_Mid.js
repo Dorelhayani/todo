@@ -1,7 +1,8 @@
 
 async function AddCategory(req, res, next){
     let name = addSlashes(req.body.name);
-    let Query =`INSERT INTO categories ( name) VALUES ('${name}') ` ;
+    let user_id = parseInt(req.user_id);
+    let Query =`INSERT INTO categories (name, user_id) VALUES ('${name}' , ${user_id}) ` ;
 
     const promisePool = db_pool.promise();
 
@@ -12,13 +13,14 @@ async function AddCategory(req, res, next){
 }
 async function UpdateCategory(req, res, next){
     let id = parseInt(req.params.id);
+    let user_id = parseInt(req.user_id);
     if(id <= 0) {
         req.GoodOne = false;
         return next();
     }
     req.GoodOne = true;
     let name = addSlashes(req.body.name);
-    let Query = `UPDATE categories SET name='${name}' WHERE id='${id}'`;
+    let Query = `UPDATE categories SET name='${name}' WHERE id='${id}' AND user_id = '${user_id}'`;
     const promisePool = db_pool.promise();
     let rows=[];
     try { [rows] = await promisePool.query(Query);}
@@ -26,8 +28,9 @@ async function UpdateCategory(req, res, next){
     next();
 }
 async function GetAllCategories(req,res,next){
+    let user_id = parseInt(req.user_id);
     let filter = (req.query.filter !== undefined) ? req.query.filter : "";
-    let Query="SELECT * FROM categories";
+    let Query = `SELECT * FROM categories WHERE user_id = '${user_id}'`;
     let wh="";
     if(filter !== ""){
         wh += (wh === "")?" WHERE " : " AND ";
@@ -52,6 +55,7 @@ async function GetAllCategories(req,res,next){
 async function GetCateroyPageCounter(req,res,next){
     let page = 0;
     let rowPerPage = 10;
+    let user_id = parseInt(req.user_id);
     if(req.query.p !== undefined) { page = parseInt(req.query.p); } //
     req.page = page;
 
@@ -65,8 +69,9 @@ async function GetCateroyPageCounter(req,res,next){
     } catch (err){ console.log(err); }
     req.total_pages= Math.floor(total_rows / rowPerPage);
 
-    Query = "SELECT * FROM categories";
-    Query += ` LIMIT ${page * rowPerPage},${rowPerPage} `;
+    // Query = "SELECT * FROM categories  WHERE user_id = '${user_id}' ";
+    // Query += ` LIMIT ${page * rowPerPage},${rowPerPage} `;
+    Query = `SELECT * FROM categories WHERE user_id = '${user_id}' LIMIT ${page * rowPerPage},${rowPerPage}`;
     req.category_data = [];
     try {
         [rows] = await promisePool.query(Query);
@@ -75,8 +80,8 @@ async function GetCateroyPageCounter(req,res,next){
     next();
 }
 async function GetCategoryName(req,res,next){
-    let Query="SELECT * FROM categories";
-
+    let user_id = parseInt(req.user_id);
+    let Query = `SELECT * FROM categories WHERE user_id = '${user_id}'`;
     const promisePool = db_pool.promise();
     let rows=[];
     req.category_name=[];
@@ -92,13 +97,14 @@ async function GetCategoryName(req,res,next){
 }
 async function GetOneCategory(req,res,next){
     let id = parseInt(req.params.id);
+    let user_id = parseInt(req.user_id);
     if(id === NaN ||(id <= 0) ){
         req.GoodOne = false;
         return next();
     }
     req.GoodOne = true;
 
-    let Query =`SELECT * FROM categories WHERE id = '${id}' `;
+    let Query =`SELECT * FROM categories WHERE id = '${id}' AND user_id = '${user_id}' `;
     const promisePool = db_pool.promise();
     let rows=[];
     req.one_category_data=[];
@@ -110,8 +116,9 @@ async function GetOneCategory(req,res,next){
 }
 async function DeleteCategory(req,res,next){
     let id = parseInt(req.body.id);
+    let user_id = parseInt(req.user_id);
     if(id > 0) {
-        let Query =`DELETE FROM categories  WHERE id = '${id}' `;
+        let Query =`DELETE FROM categories  WHERE id = '${id}' AND user_id = '${user_id}'`;
         const promisePool = db_pool.promise();
         let rows = [];
         try{ [rows] = await promisePool.query(Query); }

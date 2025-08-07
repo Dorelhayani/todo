@@ -2,28 +2,89 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Log in</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            font-family: Helvetica, Arial, sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 400px;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 16px;
+            font-size: 14px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.2s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .add-user-btn {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-<br><br><br><br><br><br><br>
 
-<center>
-    <h1>Not Registered</h1>
-    <h1>Add User</h1>
-    <button onclick="location.href='/users/add'">Add User</button><br><br><br><br>
 
-    <form action ="/auth/login" method="post">
-        <label for="name">Name</label>
-        <input type="text" name="name" id="name"/> <br>
+<form action="/auth/login" method="post">
+    <label for="name">Name</label>
+    <input type="text" name="name" id="name" />
 
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password"/> <br><br>
+    <label for="password">Password</label>
+    <input type="password" name="password" id="password" />
 
-        <button>send</button>
-    </form>
-</center>
+    <button type="submit">Login</button>
+</form>
+<h5>Not Registered</h5>
+<button class="add-user-btn" onclick="location.href='/users/add'">Add User</button>
 </body>
 </html>

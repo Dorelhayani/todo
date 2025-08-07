@@ -1,48 +1,90 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Home Page</title>
     <style>
-        td,th{border: 1px solid black;}
-        .centered { text-align: center}
+        * {
+            font-family: Helvetica, Arial, sans-serif;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .menu {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 800px;
+        }
+
+        .menu button {
+            padding: 15px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-category-add {
+            background-color: #007bff; /* blue */
+        }
+
+        .btn-category-list {
+            background-color: #6c757d; /* gray */
+        }
+
+        .btn-task-add {
+            background-color: #28a745; /* green */
+        }
+
+        .btn-task-list {
+            background-color: #17a2b8; /* teal */
+        }
+
+        .btn-user-list {
+            background-color: #ffc107; /* yellow */
+            color: #000;
+        }
+
+        .btn-user-add {
+            background-color: #dc3545; /* red */
+        }
+
+        .menu button:hover {
+            opacity: 0.85;
+        }
     </style>
 </head>
 <body>
-<center>
-    <h2>Welcome, <%= name %>!</h2>
-    <table>
-        <tr>
-            <th>Add Category</th>
-            <td><button onclick="location.href='/category/add'">Add Category</button></td>
-            <th>Category List</th>
-            <td><button onclick="location.href='/category/list'">Category List</button></td>
-            <th>Add Task</th>
-            <td><button onclick="location.href='/task/add'">Add Task</button></td>
-            <th>Task List</th>
-            <td><button onclick="location.href='/task/list'">Task List</button></td>
-            <th>Users List</th>
-            <td><button onclick="location.href='/users/list'">Users List</button></td>
-            <th>Add User</th>
-            <td><button onclick="location.href='/users/list'">Add User</button></td>
 
-        </tr>
+<h2>Welcome, <%= name %>!</h2>
 
-        <!--        <tr colspan="100" class="centered">-->
-        <!--            <td><button onclick="location.href='/category/add'">Add Category</button></td>-->
-        <!--            <td><button onclick="location.href='/category/list'">Category List</button></td>-->
-        <!--            <td><button onclick="location.href='/task/add'">Add Task</button></td>-->
-        <!--            <td><button onclick="location.href='/task/list'">Task List</button></td>-->
-        <!--            <td><button onclick="location.href='/users/list'">Users List</button></td>-->
-        <!--            <td><button onclick="location.href='/users/list'">Add User</button></td>-->
-        <!--        </tr>-->
-    </table>
+<div class="menu">
+    <button class="btn-category-add" onclick="location.href='/category/add'">Add Category</button>
+    <button class="btn-category-list" onclick="location.href='/category/list'">Category List</button>
+    <button class="btn-task-add" onclick="location.href='/task/add'">Add Task</button>
+    <button class="btn-task-list" onclick="location.href='/task/list'">Task List</button>
+    <button class="btn-user-list" onclick="location.href='/users/list'">Users List</button>
+    <button class="btn-user-add" onclick="location.href='/users/add'">Add User</button>
+</div>
 
-    <!--    <button onclick="location.href='/auth/login'">Sign In</button>-->
-    <!--<h4>Admin Access</h4>-->
-</center>
 </body>
 </html>

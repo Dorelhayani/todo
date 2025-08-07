@@ -15,7 +15,7 @@ router.post("/add",[Task_MID.AddTask], (req, res) => { res.redirect("/task/list"
 router.get("/list", [ Task_MID.HandleFilteredTasks, category_MID.GetCategoryName, category_MID.GetAllCategories], (req, res) => {
     res.render("task_list", {
         page_title: "Tasks List",
-        tasks: req.task_data,
+        task_data: req.task_data,
         categories: req.category_data,
         category_name: req.category_name[req.filter_params.category_id] || "All Categories",
         filter_params: req.filter_params,
