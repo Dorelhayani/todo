@@ -104,11 +104,10 @@
         <button>Filter</button>
     </form>
 
-    <h2>Current Category: <%= category_name %></h2>
+    <h2><%= category_name %></h2>
 
     <table>
         <tr>
-            <th>Category Name</th>
             <th>Task Name</th>
             <th>Description</th>
             <th>Due Date</th>
@@ -119,7 +118,6 @@
 
         <% for(let tsk of task_data){ %>
             <tr>
-                <td><%= category_name[tsk.category_id] %></td>
                 <td class="<%= tsk.done ? 'line-through' : '' %>"><%= tsk.name %></td>
                 <td class="<%= tsk.done ? 'line-through' : '' %>"><%= tsk.description %></td>
                 <td><%= tsk.nice_date %></td>

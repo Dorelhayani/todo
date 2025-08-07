@@ -95,7 +95,6 @@
 <table>
     <tr>
         <th>Name</th>
-        <th>Type</th>
         <th>Edit</th>
         <th>Delete</th>
     </tr>
@@ -103,7 +102,6 @@
     <% for(let urs of users){ %>
         <tr>
             <td><%= urs.name %></td>
-            <td><%= urs.type %></td>
             <td>
                 <button class="btn-edit" onclick="location.href='/users/edit/<%= urs.id %>'">Edit</button>
             </td>

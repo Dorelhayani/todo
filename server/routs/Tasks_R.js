@@ -18,6 +18,7 @@ router.get("/list", [ Task_MID.HandleFilteredTasks, category_MID.GetCategoryName
         task_data: req.task_data,
         categories: req.category_data,
         category_name: req.category_name[req.filter_params.category_id] || "All Categories",
+        // category_name: req.category_name,
         filter_params: req.filter_params,
         page: req.page,
         total_pages: req.total_pages,

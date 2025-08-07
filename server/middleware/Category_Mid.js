@@ -84,7 +84,7 @@ async function GetCategoryName(req,res,next){
     let Query = `SELECT * FROM categories WHERE user_id = '${user_id}'`;
     const promisePool = db_pool.promise();
     let rows=[];
-    req.category_name=[];
+    req.category_name= {};
     try {
         [rows] = await promisePool.query(Query);
         for(let row of rows) {

@@ -28,19 +28,14 @@ global.was_logged = false;
 const users_MID = require("./server/middleware/User_Mid");
 const users_rtr = require('./server/routs/User_R');
 app.use('/users', [users_MID.isLogged], users_rtr);
-// app.use('/users', users_rtr);
-
 
 const category_rtr = require('./server/Routs/Category_R');
 app.use('/category', [users_MID.isLogged],category_rtr);
-// app.use('/category', category_rtr);
 
 const task_rtr = require('./server/Routs/Tasks_R')
 app.use('/task', [users_MID.isLogged], task_rtr);
-// app.use('/task', task_rtr);
 
 const auth_R = require('./server/Routs/Auth_R');
 app.use('/auth', auth_R);
-
 app.get('/', (req, res)=>{ res.render("login_page",{}); });
 app.listen(port, ()=> { console.log(`Now Listening On Port http://localhost:${port}`); });

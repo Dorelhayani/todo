@@ -42,12 +42,11 @@ async function AddUser(req, res, next){
     let name = (req.body.name !== undefined) ? addSlashes(req.body.name): "";
     let password = (req.body.password !== undefined) ? req.body.password: "";
     let enc_pass = md5("A"+password);
-    let type = (req.body.type !== undefined) ? Number(req.body.type): -1;
 
     let Query="INSERT INTO users";
-    Query +="(`name`,`password`,`type`)";
+    Query +="(`name`,`password`)";
     Query +="VALUES";
-    Query +=`('${name}','${enc_pass}','${type}')`;
+    Query +=`('${name}','${enc_pass}')`;
 
     const promisePool = db_pool.promise();
     let rows = [];
@@ -58,7 +57,6 @@ async function AddUser(req, res, next){
 async function UpdateUser(req, res, next){
     let id = parseInt(req.params.id);
     let name = (req.body.name !== undefined) ? addSlashes(req.body.name): "";
-    let type = (req.body.type !== undefined) ? parseInt(req.body.type): -1;
 
     if(id <= 0) {
         req.GoodOne = false;
@@ -68,7 +66,6 @@ async function UpdateUser(req, res, next){
 
     let Query =`UPDATE users SET `;
     Query +=`name   ='${name}' ,`;
-    Query +=`type='${type}' ,`;
     Query +=` WHERE id='${id}'`;
 
     const promisePool = db_pool.promise();
